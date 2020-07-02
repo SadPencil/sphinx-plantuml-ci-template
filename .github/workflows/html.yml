@@ -11,9 +11,8 @@ on:
 #    branches: [ master ]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    name: Tencent Cloudbase Github Action Example
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Set up Git repository
