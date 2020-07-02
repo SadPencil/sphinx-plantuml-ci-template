@@ -22,8 +22,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Install fonts
         run: |
-          sudo cp -rf depends/font/* /usr/share/fonts/
-          sudo fc-cache
+          ( sudo cp -rf depends/font/* /usr/share/fonts/ && sudo fc-cache ) || true
 
       - name: Install Java Runtime
         run: sudo apt-get -y install default-jre
