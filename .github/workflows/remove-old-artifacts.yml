@@ -17,4 +17,4 @@ jobs:
         # Optional inputs
         # skip-tags: true
         # the value of `skip-recent` means reserving the latest number's artifacts, instead of the latest number's commits'.
-        skip-recent: 3
+        skip-recent: 4

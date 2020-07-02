@@ -1,0 +1,50 @@
+# This is a basic workflow to help you get started with Actions
+
+name: html
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+#  pull_request:
+#    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Tencent Cloudbase Github Action Example
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: Install fonts
+        run: |
+          sudo cp -rf depends/font/* /usr/share/fonts/
+          sudo fc-cache
+
+      - name: Install Java Runtime
+        run: sudo apt-get -y install default-jre
+
+      - name: Install graphviz
+        run: sudo apt-get -y install graphviz
+
+      - name: Install sphix
+        run: |
+          sudo python3 -m pip install -U setuptools
+          sudo python3 -m pip install -U sphinx sphinx-autobuild sphinx_rtd_theme recommonmark sphinx-markdown-tables sphinxcontrib-plantuml
+          
+      - name: Download plantuml.jar
+        run: |
+          echo use "depends/plantuml/plantuml.jar"
+
+      - name: Produce html files
+        run: make html
+        
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: static
+          path: build/html/

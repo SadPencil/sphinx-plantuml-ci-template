@@ -25,29 +25,23 @@ jobs:
         uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - name: Install Java 11 Runtime
-        run: sudo apt-get -y install default-jre
-
-      - name: Install graphviz
-        run: sudo apt-get -y install graphviz
-
-      - name: Install sphix
-        run: |
-          sudo python3 -m pip install -U setuptools
-          sudo python3 -m pip install -U sphinx sphinx-autobuild sphinx_rtd_theme recommonmark sphinx-markdown-tables sphinxcontrib-plantuml
-          
-      - name: Download plantuml.jar
-        run: |
-          echo use "depends/plantuml/plantuml.jar"
-
-      - name: Produce .tex files
-        run: make latex
-
-      - name: Compile .tex files
-        uses: xu-cheng/texlive-action/full@v1
+      - uses: SadPencil/texlive-action/full@v2
         with:
-          run: (cd build/latex/ && xelatex sphinx.tex)
-
+          run: |
+            # Install fonts
+            cp -rf depends/font/* /usr/share/fonts/
+            fc-cache
+            # Install python3, Java Runtime, graphviz, make
+            apt-get update
+            apt-get -y install python3 python3-pip default-jre graphviz make
+            # Install sphix, sphinxcontrib-plantuml (latest version)
+            python3 -m pip install -U setuptools
+            python3 -m pip install -U sphinx sphinx-autobuild sphinx_rtd_theme recommonmark sphinx-markdown-tables sphinxcontrib-plantuml
+            # Download plantuml.jar
+            echo use "depends/plantuml/plantuml.jar"
+            # Produce .tex files && Compile to PDF
+            make latexpdf
+            
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
