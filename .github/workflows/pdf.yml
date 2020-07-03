@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - uses: SadPencil/texlive-action/full@v2
+      - uses: SadPencil/texlive-action/full@v3
         with:
           run: |
             # Install fonts
